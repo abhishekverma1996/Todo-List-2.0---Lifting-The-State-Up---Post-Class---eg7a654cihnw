@@ -1,32 +1,23 @@
-import React, { useEffect, useState } from "react";
-import Inbox from "./Inbox";
-import Next7Days from "./Next7Days";
-import Today from "./Today";
+import React from "react";
+import ListRender from "./ListRender";
 
-const list = [
-  { number: 1, title: "Let's complete this", date: (new Date()).toLocaleDateString("en-US") },
-  { number: 2, title: "Should sleep at 9pm", date: (new Date()).toLocaleDateString("en-US") },
-  { number: 3, title: "Should complete react", date: (new Date()).toLocaleDateString("en-US") },
-];
-  
+const Next7Days = (props) => {
+  const date = new Date();
+  console.log(date);
+  const nextWeek = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000); // add 7 days to the current date
 
-const MainSection = (props) => {
-  const [mainlist, setli] = useState(list);
-  const [aya, setaya] = useState(0);
-  function appendList(nayaList){
-    
-    setli([...mainlist, nayaList]);
-  }
-  
+  const nseven = props.list.filter((itm) => {
+    const d = new Date(itm.date);
+    console.log(d,"ddddd");
+    return d <= date || d <= nextWeek && d >= date;
+  });
+  console.log(nseven)
+
   return (
-    <div className="main-section">
-      {props.active === "INBOX" && (
-        <Inbox list={mainlist} append={appendList}/>                                         
-      )}
-      {props.active === "TODAY" && <Today list={mainlist} />}
-      {props.active === "NEXT" && <Next7Days list={mainlist} />}
+    <div id="next-list">
+      <ListRender list={nseven} />
     </div>
   );
 };
 
-export default MainSection;
+export default Next7Days;
